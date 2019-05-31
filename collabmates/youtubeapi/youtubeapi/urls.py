@@ -19,6 +19,6 @@ from search.views import YoutubeSearchView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',SearchListView.as_view(),name='search'),
+    path('',YoutubeSearchView.as_view(),name='search'),
 
 ]
