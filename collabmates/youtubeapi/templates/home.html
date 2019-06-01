@@ -24,30 +24,39 @@
 
     <br/><br/>
 {% endfor %}
-                        {% load mathfilters %}
-                    {% if is_paginated %}
-                        <div class="blog-pagination">
-                            <ul class="flat-pagination clearfix">
-                                {% if page_obj.has_previous  %}
-                                    <li class="prev">
-                                        <a href="?page={{ page_obj.previous_page_number }}"><i class="fa fa-angle-left"></i></a>
-                                    </li>
-                                {% endif %}
-                                {% for page in page_obj.paginator.page_range %}
-                                  {% if page >= page_obj.number|sub:"2" %}
-                                    {% if page <= page_obj.number|add:"2" %}
-                                      <li {% if page ==  page_obj.number %}class="active"{% endif %}><a {% if page !=  page_obj.number %}href="?page={{ page }}{% endif %}">{{ page }}</a></li>
-                                    {% endif %}
-                                  {% endif %}
-                                {% endfor %}
-                                {% if page_obj.has_next %}
-                                    <li class="next">
-                                        <a href="page={{ page_obj.next_page_number }}&q={{ searchKey }}"><i class="fa fa-angle-right"></i></a>
-                                    </li>
-                                {% endif %}
-                            </ul><!-- /.flat-pagination -->
-                        </div><!-- /.blog-pagination -->
-                    {% endif %}
+                        <nav aria-label="Page navigation example">
+    <ul class="pagination pagination-template d-flex justify-content-center">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a href="?page={{ page_obj.previous_page_number }}&q={{request.GET.q}}" class="page-link">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+            </li>
+        {% endif %}
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <li class="page-item">
+                        <a href="?page={{ page_obj.number }}&q={{request.GET.q}}" class="page-link active">
+                            {{ num }}
+                        </a>
+                    </li>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item">
+                    <a href="?page={{ num }}&q={{request.GET.q}}" class="page-link ">
+                        {{ num }}
+                    </a>
+                </li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a href="?page={{ page_obj.next_page_number }}&q={{request.GET.q}}" class="page-link">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
 
 
 </body>
