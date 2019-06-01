@@ -30,6 +30,8 @@ class YoutubeSearchView(ListView):
     def get_queryset(self):
         query = self.request.GET.get('q')
         Q = SearchDetail.objects.all().filter(query = query).order_by('-datetime')
+        if query:
+            Q = SearchDetail.objects.all().filter(query = query).order_by('-datetime')
         if not Q.exists() : 
             youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION,developerKey=DEVELOPER_KEY)
             search_response = youtube.search().list(q=query,part='id,snippet',maxResults=20,order = 'date', publishedAfter='2010-01-01T00:00:00Z').execute()
